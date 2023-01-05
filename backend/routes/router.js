@@ -2,12 +2,16 @@ const express = require('express');
 
 const router = express.Router();
 
-//Services router
-const servicesRouter = ('./services');
+// Services router
+const servicesRouter = require('./services');
 
-router.use("/", (req, res, next) => {
-  req.servicesRouter;
-  next();
-});
+router.use("/", servicesRouter);
+
+
+
+// Parties routes
+const partyRouter = require('./parties');
+
+router.use("/", partyRouter);
 
 module.exports = router;

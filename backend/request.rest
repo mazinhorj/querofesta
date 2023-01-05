@@ -2,8 +2,94 @@ POST http://localhost:3000/api/services
 Content-Type: application/json
 
 {
-  "name": "Mazinho Party 40",
-  "description": "Meu 40ndo",
-  "price": 5500,
+  "name": "Teste 02",
+  "description": "testando 02",
+  "price": 8500,
+  "image": "nao tem mesmo"
+}
+
+###
+
+GET http://localhost:3000/api/services
+
+###
+
+GET http://localhost:3000/api/parties
+
+
+### 
+
+GET http://localhost:3000/api/parties/63b7095e82868260ad77691a
+
+###
+
+
+DELETE  http://localhost:3000/api/parties/63b70d97aac9ec2628ea9eb5
+
+
+###
+
+GET http://localhost:3000/api/services/
+
+
+###
+
+DELETE http://localhost:3000/api/services/63b6de3a70b2d5707a460c87
+
+###
+
+PUT http://localhost:3000/api/services/63b6ffa2f689360326cd5ab3
+Content-Type: application/json
+
+{
+  "name": "Atualizado",
+  "description": "teste atualizado",
+  "price": 15500,
+  "image": "aqui vai url de imagem"
+}
+
+### 
+
+PUT  http://localhost:3000/api/parties/63b7095e82868260ad77691a
+Content-Type: application/json
+
+{
+  "title": "Festa 02 mudou",
+  "author": "Eu mesmooooooooo",
+  "description": "testando a inserção da festaaaaaaaaaaaaaaaaaaa",
+  "budget": 8500,
   "image": "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGdlbmVyaWMlMjBwYXJ0eXxlbnwwfHwwfHw%3D&auto=format"
+}
+
+###
+
+POST http://localhost:3000/api/parties
+Content-Type: application/json
+
+{
+  "title": "Festa 03",
+  "author": "Outra pessoa",
+  "description": "testando a inserção da festa 02",
+  "budget": 4800,
+  "image": "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGdlbmVyaWMlMjBwYXJ0eXxlbnwwfHwwfHw%3D&auto=format",
+  "services": [
+    {
+      "name": "serviço 1",
+      "description": "serviço da festa",
+      "price": 600,
+      "image": "aqui vai url de imagem"
+    },
+    {
+      "name": "serviço 2",
+      "description": "serviço da festa",
+      "price": 1600,
+      "image": "aqui vai url de imagem"
+    },
+    {
+      "name": "serviço 3",
+      "description": "serviço da festa",
+      "price": 2600,
+      "image": "aqui vai url de imagem"
+    }
+  ]
 }
