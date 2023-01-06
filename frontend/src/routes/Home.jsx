@@ -1,5 +1,7 @@
 import partyFetch from "../axios/config";
 
+import './Home.css';
+
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 
@@ -29,7 +31,7 @@ const Home = () => {
             <div className="party" key={party._id}>
               <img src={party.image} alt={party.title} />
               <h3>{party.title}</h3>
-              <Link to={`/party/${party._id}`} className="btn-secondary">Detalhes</Link>
+              <Link to={`/party/${party._id}`} className="btn_secondary">Detalhes</Link>
             </div>
           )
         })}
