@@ -42,8 +42,8 @@ const Party = () => {
     <div className="party">
       <h2>{party.title}</h2>
       <div className="actions_container">
-        <button className="btn" onClick={navigate(`/party/edit/${party._id}`)}>Editar</button>
-        <Link to={`/party/edit/${party._id}`} className="btn">Editar</Link>
+        <button className="btn" onClick={() => navigate(`/party/edit/${party._id}`)}>Editar</button>
+        {/* <Link to={`/party/edit/${party._id}`} className="btn">Editar</Link> */}
         <button className="btn" onClick={handleDelete}>Excluir</button>
       </div>
       <p className="desc">{party.description}</p>
