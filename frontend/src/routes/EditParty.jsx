@@ -1,3 +1,5 @@
+import './EditParty.css';
+
 import './Form.css';
 import partyFetch from '../axios/config';
 
@@ -5,26 +7,31 @@ import useToast from '../hook/useToast';
 
 
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const CreateParty = () => {
-  const [services, setServices] = useState([]);
 
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [description, setDescription] = useState("");
-  const [budget, setBudget] = useState(0);
-  const [image, setImage] = useState("");
-  const [partyServices, setPartyServices] = useState([]);
+
+const EditParty = () => {
 
   const navigate = useNavigate();
 
-  //load services
+  const { id } = useParams();
+
+  const [party, setParty] = useState(null);
+  const [services, setServices] = useState([]);
+
+
+  //load services then party
   useEffect(() => {
     const loadServices = async () => {
-      const res = await partyFetch.get('/services');
-      //console.log(res);
+      const res = await partyFetch.get(`/services`);
+      //console.log(res.data);
       setServices(res.data);
+      loadParty()
+    };
+    const loadParty = async () => {
+      const res = await partyFetch.get(`/parties/${id}`);
+      setParty(res.data);
     };
     loadServices();
   }, []);
@@ -33,65 +40,57 @@ const CreateParty = () => {
   const handleServices = (e) => {
     const checked = e.target.checked;
     const value = e.target.value;
+    console.log(checked, value);
 
     const filteredService = services.filter((s) => s._id === value);
 
+    let partyServices = party.services;
+
     if (checked) {
 
-      setPartyServices((services) => [...services, filteredService[0]])
+      partyServices = [...partyServices, filteredService[0]];
 
     } else {
 
-      setPartyServices((services) => services.filter((s) => s._id !== value));
+      partyServices = partyServices.filter((s) => s._id !== value);
 
     };
 
-    console.log(partyServices);
-
+    setParty({ ...party, services: partyServices })
+    
   };
-
-
-  // nova festa
-  const createParty = async (e) => {
+  
+  const updateParty = async (e) => {
     e.preventDefault();
 
     try {
-      
-      const party = {
-        title,
-        author,
-        description,
-        budget,
-        image,
-        services: partyServices,
-      };
-      console.log(party);
-
-      const res = await partyFetch.post('/parties', party);
-
-      if (res.status === 201) {
-        navigate('/');
-        useToast(res.data.msg)
+      const res = await partyFetch.put(`/parties/${party._id}`, party);
+      if (res.status === 200) {
+        navigate(`/party/${id}`);
+        useToast(res.data.msg);
       }
-
     } catch (error) {
       useToast(error.response.data.msg, "error");
     }
+    
+  }
 
-  };
+  if (!party) return <p>Carregando festa...</p>;
+  if (!services) return <p>Carregando serviços...</p>;
+
 
   return (
     <div className='form_page'>
-      <h2>Crie sua próxima Festa</h2>
-      <p>Defina seu orçamento e escolha os serviços.</p>
-      <form onSubmit={(e) => createParty(e)}>
+      <h2>Editar: { party.title}</h2>
+      <p>Redefinir informações.</p>
+      <form onSubmit={(e) => updateParty(e)}>
         <label>
           <span>Nome da Festa:</span>
           <input
             type="text"
             placeholder='Vai ser o que?'
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
+            onChange={(e) => setParty({...party, title: e.target.value})}
+            value={party.title}
             required
           />
         </label>
@@ -100,8 +99,8 @@ const CreateParty = () => {
           <input
             type="text"
             placeholder='Quem banca?'
-            onChange={(e) => setAuthor(e.target.value)}
-            value={author}
+            onChange={(e) => setParty({ ...party, author: e.target.value })}
+            value={party.author}
             required
           />
         </label>
@@ -109,8 +108,8 @@ const CreateParty = () => {
           <span>Descrição:</span>
           <textarea
             placeholder='Conta como vai ser...'
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
+            onChange={(e) => setParty({ ...party, description: e.target.value })}
+            value={party.description}
             required
           ></textarea>
         </label>
@@ -118,8 +117,8 @@ const CreateParty = () => {
           <span>Investimento: R$</span>
           <input
             type="number"
-            onChange={(e) => setBudget(e.target.value)}
-            value={budget}
+            onChange={(e) => setParty({ ...party, budget: e.target.value })}
+            value={party.budget}
             required
           />
           {/* <input
@@ -138,23 +137,28 @@ const CreateParty = () => {
           <input
             type="text"
             placeholder='Insira a URL da imagem'
-            onChange={(e) => setImage(e.target.value)}
-            value={image}
+            onChange={(e) => setParty({ ...party, image: e.target.value })}
+            value={party.image}
             required
           />
         </label>
         <div>
           <h2>Escolha os serviços</h2>
           <div className="services_container">
-            {services.length === 0 && <p>Carregando...</p>}
-            {services.length > 0 && services.map((service) => {
+            {/* {party.services.length === 0 && <p>Carregando...</p>} */}
+            {services.map((service) => {
               return (
                 <div className='service' key={service._id}>
                   <img src={service.image} alt={service.name} />
                   <p className="service_name">{service.name}</p>
                   <p className="service_price">R${service.price}</p>
                   <div className="checkbox_container">
-                    <input type="checkbox" value={service._id} onChange={(e) => handleServices(e)} />
+                    <input
+                      type="checkbox"
+                      value={service._id}
+                      onChange={(e) => handleServices(e)}
+                      checked={party.services.find((partyService) => partyService._id === service._id) || ""}
+                    />
                     <p>Marque para solicitar</p>
                   </div>
                 </div>
@@ -162,10 +166,10 @@ const CreateParty = () => {
             })}
           </div>
         </div>
-        <input type="submit" value="Criar Festa" className="btn" />
+        <input type="submit" value="Salvar Alterações" className="btn" />
       </form>
     </div>
   )
 }
 
-export default CreateParty
+export default EditParty

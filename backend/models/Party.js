@@ -31,6 +31,6 @@ const partySchema = new Schema({
   },
 }, { timestamps: true });
 
-const Party = mongoose.model('PArty', partySchema);
+const Party = mongoose.model('Party', partySchema);
 
 module.exports = Party;

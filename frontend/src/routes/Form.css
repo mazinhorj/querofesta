@@ -17,6 +17,10 @@
   margin: 0 auto;
 }
 
+.form_page span {
+  margin-bottom: .4rem;
+}
+
 .form_page label {
   color: #555;
   display: flex;
@@ -98,7 +102,7 @@
 }
 
 .form_page .btn {
-  max-width: 148px;
+  max-width: fit-content;
   margin: 0 auto;
   font-size: 1.2rem;
 }

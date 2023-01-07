@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const loadParties = async () => {
       const res = await partyFetch.get('/parties');
-      console.log(res);
+      // console.log(res);
       setParties(res.data);
     };
     loadParties();
@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <small>Home</small>
+      {/* <small>Home</small> */}
       <h2>Suas Festas</h2>
       <div className="parties_container">
         {parties.length === 0 && <p>Não tem festa ainda!</p>}

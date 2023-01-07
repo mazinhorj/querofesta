@@ -24,7 +24,7 @@ const partyController = {
 
       // budget < service price != new service
       if (party.services && !checkPartyBudget(party.budget, party.services)) {
-        res.status(406).json({ msg: "Tá sem grana? Sorry!" });
+        res.status(406).json({ msg: "Tá sem grana? Não rola. Sorry!" });
         return;
       };
 
@@ -54,7 +54,7 @@ const partyController = {
         res.status(404).json({ msg: "Não achei o que você procura" });
         return;
       };
-      res.json({party, msg: "Achei o que vc queria!"});
+      res.json(party);
     } catch (error) {
       console.log(`Xiiii... Tem certeza: ${error}`)
     };
@@ -86,7 +86,7 @@ const partyController = {
       services: req.body.services,
     };
     if (party.services && !checkPartyBudget(party.budget, party.services)) {
-      res.status(406).json({ msg: "Tá sem grana? Sorry!" });
+      res.status(406).json({ msg: "Tá sem grana? Não rola. \n Sorry!" });
       return;
     };
     const updatedParty = await PartyModel.findByIdAndUpdate(id, party);
